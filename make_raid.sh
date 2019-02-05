@@ -1,6 +1,7 @@
 ﻿#! /bin/bash
 sudo su
 mdadm --create --verbose /dev/md0 -l 5 -n 5 /dev/sd{b,c,d,e,f}
+mkdir -p /etc/mdadm
 echo "DEVICE partitions" > /etc/mdadm/mdadm.conf
 mdadm --detail --scan --verbose | awk '/ARRAY/ {print}' >> /etc/mdadm/mdadm.conf
 parted -s /dev/md0 mklabel gpt
