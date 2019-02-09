@@ -1,0 +1,92 @@
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2019.02.10 00:25:35 =~=~=~=~=~=~=~=~=~=~=~=
+login as: vagrant
+vagrant@127.0.0.1's password: 
+Last login: Sat Feb  9 21:10:25 2019 from 10.0.2.2
+]0;vagrant@lvm:~[?1034h[vagrant@lvm ~]$ lsblk
+NAME                     MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda                        8:0    0   40G  0 disk 
+├─sda1                     8:1    0    1M  0 part 
+├─sda2                     8:2    0    1G  0 part /boot
+└─sda3                     8:3    0   39G  0 part 
+  ├─VolGroup00-LogVol00  253:0    0    8G  0 lvm  /
+  └─VolGroup00-LogVol01  253:1    0  1.5G  0 lvm  [SWAP]
+sdb                        8:16   0   10G  0 disk 
+└─vg_root-lv_root        253:6    0   10G  0 lvm  
+sdc                        8:32   0    2G  0 disk 
+├─vg_var-lv_var_rmeta_0  253:2    0    4M  0 lvm  
+│ └─vg_var-lv_var        253:7    0  952M  0 lvm  /var
+└─vg_var-lv_var_rimage_0 253:3    0  952M  0 lvm  
+  └─vg_var-lv_var        253:7    0  952M  0 lvm  /var
+sdd                        8:48   0    1G  0 disk 
+├─vg_var-lv_var_rmeta_1  253:4    0    4M  0 lvm  
+│ └─vg_var-lv_var        253:7    0  952M  0 lvm  /var
+└─vg_var-lv_var_rimage_1 253:5    0  952M  0 lvm  
+  └─vg_var-lv_var        253:7    0  952M  0 lvm  /var
+sde                        8:64   0    1G  0 disk 
+]0;vagrant@lvm:~[vagrant@lvm ~]$ lvremove /dev/g[Kvg_root/lv_root[1P[1P[1P[1P[1P[1P[1P[1P /dev/vg_root/lv_root[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P/dev/vg_root/lv_root[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1Pdev/vg_root/lv_root[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1Pev/vg_root/lv_root[1Pv/vg_root/lv_root[1P/vg_root/lv_root[1Pvg_root/lv_root[1Pg_root/lv_root[1P_root/lv_root[1Proot/lv_root[1Poot/lv_root[C[1Pt/lv_root[1Pt/lv_root[1P/lv_root[1Plv_root[1Pv_root[1P_root[1Proot[1Poot[C[1Pt[1Pt[Ksudo su
+]0;root@lvm:/home/vagrant[?1034h[root@lvm vagrant]# /[Klvremove /dev/vg_root/lv_root
+Do you really want to remove active logical volume vg_root/lv_root? [y/n]: y
+  Logical volume "lv_root" successfully removed
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# vgremove /dev/vg_root
+  Volume group "vg_root" successfully removed
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# pvremove /dev/sdb
+  Labels on physical volume "/dev/sdb" successfully wiped.
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# lsblk
+NAME                     MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda                        8:0    0   40G  0 disk 
+├─sda1                     8:1    0    1M  0 part 
+├─sda2                     8:2    0    1G  0 part /boot
+└─sda3                     8:3    0   39G  0 part 
+  ├─VolGroup00-LogVol00  253:0    0    8G  0 lvm  /
+  └─VolGroup00-LogVol01  253:1    0  1.5G  0 lvm  [SWAP]
+sdb                        8:16   0   10G  0 disk 
+sdc                        8:32   0    2G  0 disk 
+├─vg_var-lv_var_rmeta_0  253:2    0    4M  0 lvm  
+│ └─vg_var-lv_var        253:7    0  952M  0 lvm  /var
+└─vg_var-lv_var_rimage_0 253:3    0  952M  0 lvm  
+  └─vg_var-lv_var        253:7    0  952M  0 lvm  /var
+sdd                        8:48   0    1G  0 disk 
+├─vg_var-lv_var_rmeta_1  253:4    0    4M  0 lvm  
+│ └─vg_var-lv_var        253:7    0  952M  0 lvm  /var
+└─vg_var-lv_var_rimage_1 253:5    0  952M  0 lvm  
+  └─vg_var-lv_var        253:7    0  952M  0 lvm  /var
+sde                        8:64   0    1G  0 disk 
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# lvcreate -n LogVol_Home -L2G 2G[C[C /dev/VolGroup00
+  Logical volume "LogVol_Home" created.
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# mkfs.xfs /dev/VolGroup00/LogVol_Home 
+meta-data=/dev/VolGroup00/LogVol_Home isize=512    agcount=4, agsize=131072 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=0, sparse=0
+data     =                       bsize=4096   blocks=524288, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal log           bsize=4096   blocks=2560, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# mount /dev/VolGroup00/LogVol_Home /mnt
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# cp -aR /home/* /mnt/
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# rm -rf /home/*
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# unma[Kount[1Pmount[C[C[C[C[C /mnt
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# mount /dev?[K/VolGroup00/LogVol_Home /m[Khomr[Ke/
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# echo "`blkid | grep Home | awk '{print $2}'` /home xfs defau lts 0 0" >> /etc/fstab
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# touch /hoe[Kme/file{1..20}
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# lc[Kvcreate -L 100MB -s -n home_snap /dev/VolGroup00/LogVol_Hom e[K[A[root@lvm vagrant]# lvcreate -L 100MB -s -n home_snap /dev/VolGroup00/LogVol_Home[K[root@lvm vagrant]# lvcreate -L 100MB -s -n home_snap /dev/VolGroup00/LogVol_Home
+  Rounding up size to full physical extent 128.00 MiB
+  Logical volume "home_snap" created.
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# rm -f /home/file{11..20}
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# ls /home/
+file1  file10  file2  file3  file4  file5  file6  file7  file8  file9  [0m[01;34mvagrant[0m
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# un[Kmount /home
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# lvconert /[K--merge /ed[K[Kf[Kdev/C[KVolGroup00/home_snap 
+bash: lvconert: command not found
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# lvconert --merge /dev/VolGroup00/home_snap [1@v[C[C[C[C[C[C[C[C[C[C
+  Merging of volume VolGroup00/home_snap started.
+  VolGroup00/LogVol_Home: Merged: 100.00%
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# mount /home
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# ls /home/
+file1   file11  file13  file15  file17  file19  file20  file4  file6  file8  [0m[01;34mvagrant[0m
+file10  file12  file14  file16  file18  file2   file3   file5  file7  file9
+]0;root@lvm:/home/vagrant[root@lvm vagrant]# exit
+exit
+]0;vagrant@lvm:~[vagrant@lvm ~]$ exit
+logout
