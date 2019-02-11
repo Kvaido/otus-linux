@@ -1,41 +1,41 @@
 
 
 
-#Создаем физический уровнень для раздела /opt
+#РЎРѕР·РґР°РµРј С„РёР·РёС‡РµСЃРєРёР№ СѓСЂРѕРІРЅРµРЅСЊ РґР»СЏ СЂР°Р·РґРµР»Р° /opt
 pvcreate /dev/sdb
 
-#Создаем том для /opt
+#РЎРѕР·РґР°РµРј С‚РѕРј РґР»СЏ /opt
 vgcreate vg_opt /dev/sdb
 
-#Создаем логический уровень для раздела /opt
+#РЎРѕР·РґР°РµРј Р»РѕРіРёС‡РµСЃРєРёР№ СѓСЂРѕРІРµРЅСЊ РґР»СЏ СЂР°Р·РґРµР»Р° /opt
 lvcreate -n lv_opt -l 80%FREE /dev/vg_opt
 WARNING: xfs signature detected on /dev/vg_opt/lv_opt at offset 0. Wipe it? [y/n]: y
   Wiping xfs signature on /dev/vg_opt/lv_opt.
   Logical volume "lv_opt" created.
 
-#Создаем файловую систему BTRFS
+#РЎРѕР·РґР°РµРј С„Р°Р№Р»РѕРІСѓСЋ СЃРёСЃС‚РµРјСѓ BTRFS
 mkfs.btrfs /dev/vg_opt/lv_opt
 
-#Отмонтируем старый раздел /opt
+#РћС‚РјРѕРЅС‚РёСЂСѓРµРј СЃС‚Р°СЂС‹Р№ СЂР°Р·РґРµР» /opt
 umount /opt
 
-#Принмонтируем новый
+#РџСЂРёРЅРјРѕРЅС‚РёСЂСѓРµРј РЅРѕРІС‹Р№
 mount /dev/vg_opt/lv_opt /opt
 
-#Заносим запись в fstab для автоматического монтирования /opt
+#Р—Р°РЅРѕСЃРёРј Р·Р°РїРёСЃСЊ РІ fstab РґР»СЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРіРѕ РјРѕРЅС‚РёСЂРѕРІР°РЅРёСЏ /opt
 echo "`blkid | grep opt | awk '{print $2}'` /opt btrfs defaults 0 0" >> /etc/fstab
 
-#Создаем спаншот раздела
+#РЎРѕР·РґР°РµРј СЃРїР°РЅС€РѕС‚ СЂР°Р·РґРµР»Р°
 lvcreate -L 500MB -s -n opt_snap /dev/vg_opt/lv_opt
 
-#Создания кеша
+#РЎРѕР·РґР°РЅРёСЏ РєРµС€Р°
 lvcreate -n cachefs -L 1G /dev/vg_opt
 
-#Создание кеша мета
+#РЎРѕР·РґР°РЅРёРµ РєРµС€Р° РјРµС‚Р°
 lvcreate -n cachefsmeta -L 16M /dev/vg_opt
 
-#Создание данных и метаданных в пул
+#РЎРѕР·РґР°РЅРёРµ РґР°РЅРЅС‹С… Рё РјРµС‚Р°РґР°РЅРЅС‹С… РІ РїСѓР»
 lvconvert --type cache-pool --poolmetadata /dev/vg_opt/cachefsmeta /dev/vg_opt/cachefs
 
-#Создание связи кеша и раздела /opt
+#РЎРѕР·РґР°РЅРёРµ СЃРІСЏР·Рё РєРµС€Р° Рё СЂР°Р·РґРµР»Р° /opt
 lvconvert --type cache --cachepool /dev/vg_opt/cachefs /dev/vg_opt/lv_opt
