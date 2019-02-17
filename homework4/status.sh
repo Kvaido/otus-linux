@@ -20,7 +20,7 @@ while :
 			#Читаем последнюю строку в журнале событий и передаем переменной
 			ALARM=`tail -n 1 $WATCHDOG_LOG`
 			#Отправляем письмо
-			echo "$ALARM" | mail -s "PROXY IS DOWN" kvaido@yandex.ru
+			echo "$ALARM" | mail -s "PROXY IS DOWN" your@mail.ru
 			#Перезапускаем службу squid
 			systemctl restart squid
 			sleep 2
