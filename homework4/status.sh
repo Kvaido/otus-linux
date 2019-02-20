@@ -11,7 +11,7 @@ while :
 		ps aux| grep -v grep | grep squid > /dev/null
 		#Передаем статус последней выподненной команды
 		RESULT=$?
-		curl -x localhost.localdomain:3128 http://google.com
+		curl -x localhost.localdomain:3128 http://google.com &>/dev/null
 		CHECK=$?
 		#Начинаем сравнение
 		#Если все хорошо, то продолжаем работу.
