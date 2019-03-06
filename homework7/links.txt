@@ -1,0 +1,14 @@
+#Способ 1. init=/bin/sh
+https://youtu.be/he8zbO0qj_w
+
+#Способ 2. rd.break
+https://youtu.be/kmhLP2-JyFQ
+
+#Способ 3. rw init=/sysroot/bin/sh
+https://youtu.be/p11LV5m4dIw
+
+#Установить систему с LVM, после чего переименовать VG
+https://youtu.be/-zlxOSkEMZ0
+
+#Добавить модуль в initrd
+https://youtu.be/S4i-7oarzak
