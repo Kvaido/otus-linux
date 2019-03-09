@@ -1,0 +1,11 @@
+[Unit]
+Description=My watchlog service
+
+[Service]
+Type=oneshot
+StartLimitBurst=0
+EnvironmentFile=/etc/sysconfig/watchlog
+ExecStart=/bin/bash /opt/watchlog.sh $WORD $LOG
+
+[Install]
+WantedBy=multi-user.target
