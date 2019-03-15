@@ -1,0 +1,8 @@
+---
+#–оль Ansible установки Nginx на сервер и смена рабочего порта на 8080
+- name: Nginx installation and configure
+  hosts: websrv
+  become: yes
+  
+  roles:
+   - nginx_install
