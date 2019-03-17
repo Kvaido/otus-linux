@@ -8,7 +8,7 @@ account    required     pam_time.so
 
 login;tty*&!ttyp*;!root;!Wk0000-2400
 
-Которая запрещаем всем пользователям, кроме root, заходить логиниться в выходные дни.
+Которая запрещает всем пользователям, кроме root, заходить логиниться в выходные дни.
 
 https://linux.die.net/man/5/time.conf
 https://linux.die.net/man/8/pam_time
