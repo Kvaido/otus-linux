@@ -1,0 +1,32 @@
+---
+- name: Copy config files to servers and restart SSH service
+  hosts: websrv
+  become: yes
+
+  tasks:
+     - name: Copy /etc/security/capability.conf 
+       copy: 
+          src: ./configfiles/capability.conf
+          dest: /etc/security
+          mode: 0644
+ 
+     - name: Replace file /etc/security/time.conf
+       template:
+          src: ./configfiles/time.conf.j2
+          dest: /etc/security/time.conf
+          mode: 0644	
+
+     - name: Replace file /etc/pam.d/su
+       template:
+          src: ./configfiles/su.j2
+          dest: /etc/pam.d/su
+          mode: 0644
+     
+     - name: Replace file /etc/pam.d/sshd
+       template:
+          src: ./configfiles/sshd.j2
+          dest: /etc/pam.d/sshd
+          mode: 0644			  
+
+     - name: Restart SSH service
+       systemd: name=sshd state=restarted
