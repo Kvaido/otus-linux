@@ -1,0 +1,78 @@
+---
+- name:  
+  copy: 
+    src: watchlog
+    dest: /etc/sysconfig
+    mode: 0644
+
+- name: Copy watchlog.log 
+  copy: 
+    src: watchlog.log
+    dest: /var/log
+    mode: 0644
+
+- name: Copy watchlog.sh 
+  copy: 
+    src: watchlog.sh
+    dest: /opt
+    mode: +x
+
+- name: Copy /etc/security/capability.conf 
+  copy: 
+    src: watchlog.service
+    dest: /usr/lib/systemd/system
+    mode: 0644
+
+- name: Copy watchlog.timer
+  copy: 
+    src: watchlog.timer
+    dest: /usr/lib/systemd/system
+    mode: 0644
+  notify: watchlog.timer start
+
+- name: Copy spawn-fcgi
+  template: 
+    src: spawn-fcgi
+    dest: /etc/sysconfig
+    mode: 0644
+
+- name: Copy spawn-fcgi.service 
+  template: 
+    src: spawn-fcgi.service
+    dest: /etc/systemd/system
+    mode: 0644
+  notify:
+  - start Spawn-fcgi
+
+- name: Copy httpd@.service
+  copy: 
+    src: httpd@.service
+    dest: /usr/lib/systemd/system
+    mode: 0644
+
+- name: Copy httpd-first
+  copy: 
+    src: httpd-first
+    dest: /etc/sysconfig
+    mode: 0644
+
+- name: Copy httpd-second
+  copy: 
+    src: httpd-second
+    dest: /etc/sysconfig
+    mode: 0644
+
+- name: Copy first.conf
+  copy: 
+    src: first.conf
+    dest: /etc/httpd/conf
+    mode: 0644
+
+- name: Copy httpd-second
+  copy: 
+    src: second.conf
+    dest: /etc/httpd/conf
+    mode: 0644
+  notify:
+  - start httpd-first
+  - start httpd-second

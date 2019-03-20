@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "systemd" do |systemd|
+     systemd.vm.box = "centos/7"
+     systemd.vm.network "private_network", ip: "192.168.50.15"
+     systemd.vm.hostname = "systemd"
+     systemd.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--name", "systemd"]
+        vb.memory = "2048"
+     end
+     systemd.vm.provision "shell", inline: <<-SHELL
+     yum install -y epel-release
+	 yum install -y update
+	 yum install -y ansible 
+	 yum install -y spawn-fcgi php php-cli mod_fcgid httpd
+	 SHELL
+     systemd.vm.provision "ansible_local" do |ansible|
+     ansible.playbook = "playbook.yml"
+	 end
+    end
+end

@@ -1,0 +1,12 @@
+---
+- name: watchlog.timer start
+  service: name=watchlog.timer state=restarted
+
+- name: start Spawn-fcgi
+  service: name=spawn-fcgi.service state=restarted
+
+- name: start httpd-first
+  service: name=httpd@first state=restarted
+
+- name: start httpd-second
+  service: name=httpd@second state=restarted
