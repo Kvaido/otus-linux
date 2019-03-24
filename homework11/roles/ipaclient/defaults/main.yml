@@ -1,0 +1,7 @@
+---
+freeipa_server_fqdn: ipa.kvaido.com
+freeipa_domain: kvaido.com
+freeipa_realm: KVAIDO.COM
+freeipa_server_admin_password: Pa$$w0rd
+freeipa_server_admin_acc: admin
+freeipa_client_fqdn: client.kvaido.com

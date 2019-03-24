@@ -1,0 +1,6 @@
+---
+- name: Install FreeIPA client
+  yum: name=ipa-client state=present
+
+- name: Configure FreeIPA client
+  command: ipa-client-install -U --hostname={{ freeipa_client_fqdn }} --mkhomedir --server={{ freeipa_server_fqdn }} --domain={{ freeipa_domain }}  --realm {{ freeipa_realm }} --principal {{ freeipa_server_admin_acc }}@{{ freeipa_realm }} --password {{ freeipa_server_admin_password }}

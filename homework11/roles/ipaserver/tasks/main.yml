@@ -1,0 +1,8 @@
+---
+- name: Install FreeIPA server
+  yum: name=ipa-server state=latest
+
+- name: Configure FreeIPA server
+  command: ipa-server-install -U --hostname={{ freeipa_server_fqdn }} --domain={{ freeipa_domain }} --realm={{ freeipa_realm }} --ds-password {{ freeipa_server_ds_password }} --admin-password {{ freeipa_server_admin_password }}
+  notify:
+  - restart ipa services
