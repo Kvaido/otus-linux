@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "web" do |web|
+     web.vm.box = "centos/7"
+     web.vm.network "private_network", ip: "192.168.12.50"
+     web.vm.hostname = "web"
+     web.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--name", "web"]
+        vb.memory = "512"
+     end
+     web.vm.provision "shell", inline: <<-SHELL
+     yum install -y epel-release
+	 yum install -y update
+	 yum install -y ansible vim net-tools
+	 SHELL
+     web.vm.provision "ansible_local" do |ansible|
+     ansible.playbook = "site.yml"
+	 end
+    end
+  
+  config.vm.define "zabbix" do |zabbix|
+     zabbix.vm.box = "centos/7"
+     zabbix.vm.network "private_network", ip: "192.168.12.51"
+     zabbix.vm.hostname = "zabbix"
+     zabbix.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--name", "zabbix"]
+        vb.memory = "512"
+     end
+     zabbix.vm.provision "shell", inline: <<-SHELL
+     yum install -y epel-release
+	 yum install -y update
+	 yum install -y ansible vim net-tools
+	 SHELL
+     zabbix.vm.provision "ansible_local" do |ansible|
+     ansible.playbook = "site.yml"
+	 end
+
+    end
+end

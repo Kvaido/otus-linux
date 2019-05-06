@@ -1,0 +1,46 @@
+---
+### Elasticsearch
+- name: Install Elasticsearch
+  yum:
+    name: elasticsearch
+    state: present
+  tags: install
+
+### Kibana
+- name: Install Kibana
+  yum:
+    name: kibana
+    state: present
+  tags:
+    - install
+
+  ### Nginx
+- name: Install Nginx
+  yum:
+    name: nginx
+    state: present
+  tags:
+    - install
+
+- name: Copy configs 1
+  shell: cp /vagrant/roles/elk/templates/auditd.conf.j2 /etc/audit/auditd.conf
+
+### Copy configs
+- name: Copy file
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+    owner: root
+    group: root
+  loop:
+    - { src: elasticsearch.yml.j2, dest: /etc/elasticsearch/elasticsearch.yml }
+    - { src: kibana.yml.j2, dest: /etc/kibana/kibana.yml }
+    - { src: kibana.conf.j2, dest: /etc/nginx/conf.d/kibana.conf }
+    - { src: nginx.conf.j2, dest: /etc/nginx/nginx.conf }
+  tags: configure
+  notify:
+  - Elasticsearch
+  - Kibana
+  - Nginx
+  - Auditd

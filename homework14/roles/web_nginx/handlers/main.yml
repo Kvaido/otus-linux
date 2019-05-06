@@ -1,0 +1,16 @@
+---
+- name: restart nginx
+  systemd:
+    name: nginx
+    state: restarted
+
+- name: restart filebeat
+  systemd:
+    name: filebeat
+    state: restarted
+
+- name: Auditd
+  service:
+    name: auditd
+    enabled: yes
+    state: started

@@ -1,0 +1,8 @@
+---
+- name: Install ELK on logsrv
+  hosts: logsrv
+  become: yes
+
+  roles:
+  - role: elk
+    state: present

@@ -1,0 +1,60 @@
+---
+- name: Install Filebeat
+  yum:
+    name: filebeat
+    state: present
+
+- name: Install nginx package
+  yum:
+    name: nginx
+    state: present
+  tags:
+    - install
+
+#- name: Install audispd-plugins
+#  yum:
+#    name: audispd-plugins
+#    state: present
+#  tags:
+#    - install
+
+- name: Copy configs 1
+  shell: cp /vagrant/roles/web_nginx/templates/nginx.yml /etc/filebeat/modules.d/nginx.yml
+  tags: configure
+
+- name: Copy configs 2
+  template:
+    src: filebeat.yml.j2 
+    dest: /etc/filebeat/filebeat.yml
+  tags: configure  
+
+- name: Copy configs 1
+  shell: cp /vagrant/roles/web_nginx/templates/auditd.conf.j2 /etc/audit/auditd.conf
+  
+- name: Copy files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: audisp-remote.conf.j2, dest: /etc/audisp/audisp-remote.conf }
+    - { src: au-remote.conf.j2, dest: /etc/audisp/plugins.d/au-remote.conf }
+  notify:
+    - Auditd  
+  
+- name: Start and enable Nginx
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Enable Nginx Filebeat module
+  shell: filebeat modules enable nginx
+
+- name: Enable Nginx Filebeat module
+  shell: filebeat setup
+
+- name: Start Filebeat
+  systemd:
+    name: filebeat
+    state: started
+    enabled: yes
