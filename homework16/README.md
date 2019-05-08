@@ -7,7 +7,7 @@ https://hub.docker.com/u/kvaido
 docker pull kvaido/otus
 
 ---------------------
-# Домашнее задание №2
+## Домашнее задание №2
 
 docker-swarm
 
