@@ -2,7 +2,7 @@
 
 ## Домашнее задание №1
 
-https://hub.docker.com/u/kvaido
+https://hub.docker.com/r/kvaido/otus
 
 docker pull kvaido/otus
 
