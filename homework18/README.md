@@ -2,7 +2,7 @@
 разворачиваем сетевую лабораторию
 
 # otus-linux
-Vagrantfile - для стенда урока 9 - Network
+Vagrantfile - для стенда урока 18 - Network
 
 # Дано
 https://github.com/erlong15/otus-linux/tree/network
