@@ -29,7 +29,7 @@ MACHINES = {
                 ]
   },
   
-  :office1Router => {
+  :office2Router => {
         :box_name => "centos/7",
         :net => [
                    {ip: '192.168.254.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "central-net"},
@@ -37,14 +37,14 @@ MACHINES = {
                 ]
   }, 
   
-  :office1Server => {
+  :office2Server => {
         :box_name => "centos/7",
         :net => [
                    {ip: '192.168.1.2', adapter: 2, netmask: "255.255.255.192", virtualbox__intnet: "dir-net"},
                 ]
   },
   
-  :office2Router => {
+  :office1Router => {
         :box_name => "centos/7",
         :net => [
                    {ip: '192.168.253.2', adapter: 2, netmask: "255.255.255.240", virtualbox__intnet: "central-net"},
@@ -52,7 +52,7 @@ MACHINES = {
                 ]
   }, 
   
-  :office2Server => {
+  :office1Server => {
         :box_name => "centos/7",
         :net => [
                    {ip: '192.168.2.2', adapter: 2, netmask: "255.255.255.192", virtualbox__intnet: "dir-net"},
