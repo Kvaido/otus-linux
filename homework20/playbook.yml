@@ -1,0 +1,141 @@
+---
+- name: Quagga installation and configure
+  hosts: all
+  become: yes
+  tasks:
+  - name: Install Quagga
+    yum: 
+      name: quagga
+      state: present
+
+- hosts: r1
+  become: yes
+  tasks:
+  - name: SELinux
+    shell: setsebool -P allow_zebra_write_config 1
+
+  - name: copy ospfd.conf
+    copy: src=ospfd.conf.r1 dest=/etc/quagga/ospfd.conf owner=quagga group=quagga mode=0640
+
+  - name: copy zebra.conf
+    copy: src=zebra.conf.r1 dest=/etc/quagga/zebra.conf owner=quagga group=quagga mode=0640
+
+  - name: copy daemons
+    copy: src=daemons dest=/etc/quagga/daemons owner=quagga group=quagga mode=0640
+
+  - name: Routing ON
+    shell: echo -e 'net.ipv4.conf.all.forwarding=1\nnet.ipv4.ip_forward=1\nnet.ipv4.conf.all.rp_filter=0' >> /etc/sysctl.conf
+
+  - name: Restart sysctl
+    shell: sysctl -p /etc/sysctl.conf
+
+    notify:
+      - Start Zebra
+      - Start OSPF
+      - Restart Network
+
+  handlers:
+    - name: Start Zebra
+      systemd:
+        name: zebra
+        enabled: yes
+        state: started
+
+    - name: Start OSPF
+      systemd:
+        name: ospfd
+        enabled: yes
+        state: started
+
+    - name: Restart Network
+      systemd:
+        name: network
+        state: restarted
+
+- hosts: r2
+  become: yes
+  tasks:
+  - name: SELinux
+    shell: setsebool -P allow_zebra_write_config 1
+
+  - name: copy ospfd.conf
+    copy: src=ospfd.conf.r2 dest=/etc/quagga/ospfd.conf owner=quagga group=quagga mode=0640
+
+  - name: copy zebra.conf
+    copy: src=zebra.conf.r2 dest=/etc/quagga/zebra.conf owner=quagga group=quagga mode=0640
+
+  - name: copy daemons
+    copy: src=daemons dest=/etc/quagga/daemons owner=quagga group=quagga mode=0640
+
+  - name: Routing ON
+    shell: echo -e 'net.ipv4.conf.all.forwarding=1\nnet.ipv4.ip_forward=1\nnet.ipv4.conf.all.rp_filter=0' >> /etc/sysctl.conf
+
+  - name: Restart sysctl
+    shell: sysctl -p /etc/sysctl.conf
+
+    notify:
+      - Start Zebra
+      - Start OSPF
+      - Restart Network
+
+  handlers:
+    - name: Start Zebra
+      systemd:
+        name: zebra
+        enabled: yes
+        state: started
+
+    - name: Start OSPF
+      systemd:
+        name: ospfd
+        enabled: yes
+        state: started
+
+    - name: Restart Network
+      systemd:
+        name: network
+        state: restarted
+
+- hosts: r3
+  become: yes
+  tasks:
+  - name: SELinux
+    shell: setsebool -P allow_zebra_write_config 1
+
+  - name: copy ospfd.conf
+    copy: src=ospfd.conf.r3 dest=/etc/quagga/ospfd.conf owner=quagga group=quagga mode=0640
+
+  - name: copy zebra.conf
+    copy: src=zebra.conf.r3 dest=/etc/quagga/zebra.conf owner=quagga group=quagga mode=0640
+
+  - name: copy daemons
+    copy: src=daemons dest=/etc/quagga/daemons owner=quagga group=quagga mode=0640
+
+  - name: Routing ON
+    shell: echo -e 'net.ipv4.conf.all.forwarding=1\nnet.ipv4.ip_forward=1\nnet.ipv4.conf.all.rp_filter=0' >> /etc/sysctl.conf
+
+  - name: Restart sysctl
+    shell: sysctl -p /etc/sysctl.conf
+
+    notify:
+      - Start Zebra
+      - Start OSPF
+      - Restart Network
+
+  handlers:
+    - name: Start Zebra
+      systemd:
+        name: zebra
+        enabled: yes
+        state: started
+
+    - name: Start OSPF
+      systemd:
+        name: ospfd
+        enabled: yes
+        state: started
+
+    - name: Restart Network
+      systemd:
+        name: network
+        state: restarted
