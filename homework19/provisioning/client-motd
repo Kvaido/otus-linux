@@ -8,7 +8,7 @@
     nsupdate -k /etc/named.zonetransfer.key
     server 192.168.50.10
     zone ddns.lab 
-    update add www.ddns.lab. 60 A 192.168.50.15
+    update add web1.ddns.lab. 60 A 192.168.50.15
     send
 
 - rndc is also available to manage the servers
