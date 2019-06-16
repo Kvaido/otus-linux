@@ -1,0 +1,93 @@
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+
+MACHINES = {
+  :tun1 => {
+        :box_name => "centos/7",
+        :net => [
+                   {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "central-net"},
+                ]
+  },
+  :tun2 => {
+        :box_name => "centos/7",
+        :net => [
+                   {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "central-net"},
+                ]
+  },
+  
+  :tap1 => {
+        :box_name => "centos/7",
+        :net => [
+                   {ip: '192.168.254.1', adapter: 2, netmask: "255.255.255.240", virtualbox__intnet: "central-net"},
+                ]
+  },
+  
+  :tap2 => {
+        :box_name => "centos/7",
+        :net => [
+                   {ip: '192.168.254.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "central-net"},
+                ]
+  }, 
+  
+  :openvpn => {
+        :box_name => "centos/7",
+		:public => {:ip => '192.168.1.60'},
+        :net => [
+                   {ip: '192.168.5.2', adapter: 2, netmask: "255.255.255.192", virtualbox__intnet: "openvpn-net"},
+		        ]
+  },
+
+}
+
+Vagrant.configure("2") do |config|
+
+  MACHINES.each do |boxname, boxconfig|
+
+    config.vm.define boxname do |box|
+
+        box.vm.box = boxconfig[:box_name]
+        box.vm.host_name = boxname.to_s
+
+        boxconfig[:net].each do |ipconf|
+          box.vm.network "private_network", ipconf
+        end
+        
+        if boxconfig.key?(:public)
+          box.vm.network "public_network", boxconfig[:public]
+        end
+
+        box.vm.provision "shell", inline: <<-SHELL
+          mkdir -p ~root/.ssh
+          cp ~vagrant/.ssh/auth* ~root/.ssh
+        SHELL
+        
+        case boxname.to_s
+        when "tun1"
+          box.vm.provision "shell", run: "always", inline: <<-SHELL
+            SHELL
+            box.vm.provision "shell", path: "tun1.sh"
+        when "tun2"
+          box.vm.provision "shell", run: "always", inline: <<-SHELL
+            SHELL
+            box.vm.provision "shell", path: "tun2.sh"
+        when "tap1"
+          box.vm.provision "shell", run: "always", inline: <<-SHELL
+            SHELL
+            box.vm.provision "shell", path: "tap1.sh"
+        when "tap2"
+          box.vm.provision "shell", run: "always", inline: <<-SHELL
+            SHELL
+            box.vm.provision "shell", path: "tap2.sh"
+        when "openvpn"
+          box.vm.provision "shell", run: "always", inline: <<-SHELL
+            SHELL
+            box.vm.provision "shell", path: "openvpn.sh"
+        end
+
+      end
+
+  end
+  
+end
