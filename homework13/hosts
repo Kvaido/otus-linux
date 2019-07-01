@@ -1,5 +1,5 @@
 [servers]
-zabbix ansible_host=192.168.12.51 ansible_user=vagrant ansible_ssh_private_key_file=/vagrant/.vagrant/machines/zabbix/virtualbox/private_key
+freeipa ansible_host=192.168.50.15 ansible_user=vagrant ansible_ssh_private_key_file=/vagrant/.vagrant/machines/freeipa/virtualbox/private_key
 
 [clients]
-web ansible_host=192.168.12.50 ansible_user=vagrant ansible_ssh_private_key_file=/vagrant/.vagrant/machines/web/virtualbox/private_key
+client ansible_host=192.168.50.20 ansible_user=vagrant ansible_ssh_private_key_file=/vagrant/.vagrant/machines/client/virtualbox/private_key

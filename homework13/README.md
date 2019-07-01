@@ -1,48 +1,27 @@
-# zabbix-ansible
+Домашнее задание
+LDAP
 
-Setting up zabbix server using by Ansible.
+1. Установить FreeIPA
+2. Написать playbook для конфигурации клиента
+3*. Настроить авторизацию по ssh-ключам
 
-## Requirements
+-------------------
+Предвариетельно:
 
-* CentOS 7.x
-* Ansible
+Для Windows систем:
 
-For local development environment:
+В файле C:\Windows\system32\drivers\etc\hosts добавить строку 192.168.50.15 ipa.kvaido.com
 
-* VirtualBox
-* Vagrant 1.5+
+Для Linux cистем:
 
-## Usage
-### install requirements
-```
-ansible-galaxy install -r requirements.yml
-```
+В файле /etc/hosts добавить строку 192.168.50.15 ipa.kvaido.com
 
-### production
+Для macOS систем (не проверено):
 
-First of all, install CentOS 7.x to the server.
+В файле /private/etc/hosts  добавить строку 192.168.50.15 ipa.kvaido.com
 
-Create Ansible inventory file.
+-------------------
 
-    $ ${EDITOR} production/inventory
-    [default]
-    zabbix.example.com  ansible_ssh_user=admin
+Используя терминал для запуска необходимо в каталоге c Vagrantfile набрать
 
-Run ansible playbook.
-
-    $ ansible-playbook -i production/inventory site.yml
-
-Login.
-
-* http://zabbix.example.com/<br>(Admin / zabbix)
-
-### local vagrant
-
-Run ansible playbook.
-
-    $ vagrant up
-    $ vagrant provision
-
-Login.
-
-* [http://192.168.12.51/](http://192.168.12.51/)<br>(Admin / zabbix)
+vagrant up
