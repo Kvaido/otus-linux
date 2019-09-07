@@ -21,8 +21,11 @@ nginx + java (tomcat/jetty/netty) + go + ruby
 docker-compose up --build -d
 
 В браузере открыть:
+
 http://127.0.0.1:8080
+
 http://127.0.0.1:8081
+
 http://127.0.0.1:8082
 
 ---------------------
