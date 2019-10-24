@@ -17,5 +17,6 @@
 ![Иллюстрация к проекту](https://github.com/Kvaido/otus-linux/raw/master/final_project/project.png)
 
 Для запуска проекта необходимо выполнить:
-
+```
 vagrant up
+```
