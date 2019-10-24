@@ -1,0 +1,5 @@
+---
+interface: eth1
+virtual_router_id: 1
+priority: 101
+secret_passwd: ZcnG9lGUoZeM3nFT

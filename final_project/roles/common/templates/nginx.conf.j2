@@ -1,0 +1,19 @@
+# nginx access log
+$InputFileName /var/log/nginx/access.log
+$InputFileTag nginx_access:
+$InputFileStateFile stat-nginx-acess
+$InputFileSeverity notice
+$InputFileFacility local6
+$InputRunFileMonitor
+
+# nginx error log
+$InputFileName /var/log/nginx/error.log
+$InputFileTag nginx:
+$InputFileStateFile stat-nginx-error
+$InputFileSeverity error
+$InputFileFaility local6
+$InputFilePollInterval 1
+$InputRunFileMonitor
+
+# check for new lines every 2 seconds
+$InputFilePollInterval 2

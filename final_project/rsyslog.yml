@@ -1,0 +1,8 @@
+---
+- hosts:
+  - logsrv
+  become: yes
+  roles:
+    - common
+    - security
+    - rsyslog

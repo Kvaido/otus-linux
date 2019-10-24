@@ -1,0 +1,6 @@
+---
+- hosts:
+  - web2
+  become: yes
+  roles:
+    - keepalived-backup

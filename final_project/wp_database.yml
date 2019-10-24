@@ -1,0 +1,5 @@
+---
+- hosts: mariadb2
+  become: yes
+  roles:
+    - wp_database

@@ -1,0 +1,5 @@
+- hosts:
+    - mariadb2
+  become: yes
+  roles:
+    - galera_bootstrap_slave

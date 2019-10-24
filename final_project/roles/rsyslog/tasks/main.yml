@@ -1,0 +1,6 @@
+---
+- name: Install rsyslog config
+  template: src=rsyslog.conf.j2 dest=/etc/rsyslog.conf
+
+- name: restart rsyslog
+  systemd: name=rsyslog state=restarted enabled=yes  

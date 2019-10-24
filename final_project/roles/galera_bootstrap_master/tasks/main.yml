@@ -1,0 +1,8 @@
+---
+- name: Stop MariaDB on first MariaDB Galera cluster node
+  systemd:
+    name: mariadb
+    state: stopped
+
+- name: Bootstrap first MariaDB Galera cluster node
+  shell: galera_new_cluster

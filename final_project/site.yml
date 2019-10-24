@@ -1,0 +1,14 @@
+---
+- import_playbook: rsyslog.yml
+- import_playbook: cluster.yml
+- import_playbook: keepalived-master.yml
+- import_playbook: keepalived-backup.yml
+- import_playbook: php.yml
+- import_playbook: db-cluster.yml
+- import_playbook: db-keepalived-master.yml
+- import_playbook: db-keepalived-backup.yml
+- import_playbook: galera.yml
+- import_playbook: galera_bootstrap_master.yml
+- import_playbook: galera_bootstrap_slave.yml
+- import_playbook: wp_database.yml
+- import_playbook: wp.yml

@@ -1,0 +1,10 @@
+---
+- hosts:
+    - web1
+    - web2
+  become: yes
+  roles:
+    - common
+    - security
+    - nginx
+    - haproxy

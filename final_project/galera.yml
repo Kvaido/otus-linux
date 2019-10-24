@@ -1,0 +1,11 @@
+---
+- hosts: 
+    - mariadb1
+    - mariadb2
+  become: yes
+  roles:
+    - { role: galera_repos, tags: [ 'setup', 'packages' ] }
+    - { role: galera_packages, tags: [ 'setup', 'packages' ] }
+    - { role: galera_privs, tags: [ 'auth' ] }
+    - { role: galera_conf, tags: [ 'config' ] }
+

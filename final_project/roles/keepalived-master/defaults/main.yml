@@ -1,0 +1,4 @@
+---
+
+interface: eth1
+virtual_router_id: 1

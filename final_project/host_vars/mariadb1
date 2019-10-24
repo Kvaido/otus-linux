@@ -1,0 +1,6 @@
+---
+# Host specific settings
+
+my_interconnect_ip: "{{ db_cluster_interconnect_ips[0] }}"
+mysql_listen_port: "{{ db_cluster_servers[0].port }}"
+require_crm_settings: False

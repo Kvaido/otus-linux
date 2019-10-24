@@ -1,0 +1,6 @@
+---
+- hosts:
+  - mariadb1
+  become: yes
+  roles:
+    - db-keepalived-master

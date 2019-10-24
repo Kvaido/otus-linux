@@ -1,0 +1,96 @@
+---
+# Common settings
+
+web_cluster_virtual_ip: 10.0.0.84
+
+db_cluster_virtual_ip: 10.0.0.94
+
+#cluster_server_count: 2
+
+#db_cluster_server_count: 2
+
+inventory_hostname:
+- name: mariadb1
+- name: mariadb2
+- name: mariadb3
+
+galera_cluster:
+- name: mariadb1
+- name: mariadb2
+- name: mariadb3
+
+web_cluster_server_ips:
+  - 10.0.0.81
+  - 10.0.0.82
+  - 10.0.0.83
+
+cluster_interconnect_ips:
+  - 10.0.1.81
+  - 10.0.1.82
+  - 10.0.1.83
+
+db_cluster_server_ips:
+  - 10.0.0.91
+  - 10.0.0.92
+  - 10.0.0.100
+
+db_cluster_interconnect_ips:
+  - 10.0.1.91
+  - 10.0.1.92
+  - 10.0.1.93
+
+cluster_servers:
+  - ip: "{{ web_cluster_server_ips[0] }}"
+    name: web1.local web1
+  - ip: "{{ web_cluster_server_ips[1] }}"
+    name: web2.local web2
+  - ip: "{{ web_cluster_virtual_ip }}"
+    name: web.local web
+  - ip: "{{ db_cluster_server_ips[0] }}"
+    name: mariadb1.local mariadb1
+  - ip: "{{ db_cluster_server_ips[1] }}"
+    name: mariadb2.local mariadb2
+  - ip: "{{ db_cluster_server_ips[2] }}"
+    name: logsrv.local logsrv
+  - ip: "{{ db_cluster_virtual_ip }}"
+    name: mariadb.local mariadb
+
+nginx_cluster_servers:
+  - ip: "{{ web_cluster_server_ips[0] }}"
+    port: 80
+    name: web1
+  - ip: "{{ web_cluster_server_ips[1] }}"
+    port: 80
+    name: web2
+
+db_cluster_servers:
+  - ip: "{{ db_cluster_server_ips[0] }}"
+    port: 3306
+    name: mariadb1
+  - ip: "{{ db_cluster_server_ips[1] }}"
+    port: 3306
+    name: mariadb2
+
+
+############################
+# WordPress database settings
+wp_db_name: wordpress
+wp_db_user: wordpress
+wp_db_password: p@ssw0rd
+  
+mysql_port: 3306
+mysql_root_password: root
+
+auto_up_disable: true
+
+server_hostname: web.local
+
+# WordPress Version
+wp_version: 4.9.12
+wp_sha1sum: 6c19dfceed88a38701aba9eb90007e8fbcdbad47
+
+#Define Core Update Level
+#true  = Development, minor, and major updates are all enabled
+#false = Development, minor, and major updates are all disabled
+#minor = Minor updates are enabled, development, and major updates are disabled
+core_update_level: true

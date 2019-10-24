@@ -1,0 +1,10 @@
+---
+- hosts:
+    - mariadb1
+    - mariadb2
+  become: yes
+  roles:
+    - common
+    - cluster
+    - db-haproxy
+    - security

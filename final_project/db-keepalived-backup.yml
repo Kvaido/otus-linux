@@ -1,0 +1,6 @@
+---
+- hosts:
+  - mariadb2
+  become: yes
+  roles:
+    - db-keepalived-backup

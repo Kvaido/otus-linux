@@ -1,0 +1,16 @@
+---
+- name: Restart MariaDB Galera cluster
+  service: name=mariadb state=restarted
+  when: bootstrapped
+
+- name: restart mariadb
+  service: name=mariadb state=restarted
+
+- name: start mariadb
+  service: name=mariadb state=started
+
+- name: stop mariadb
+  service: name=mariadb state=stopped
+
+- name: reload ulimit
+  service: name=mariadb state=restarted 

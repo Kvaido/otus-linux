@@ -1,0 +1,117 @@
+---
+- name: Copy the NGINX repository definition
+  copy: src=nginx.repo dest=/etc/yum.repos.d/
+
+- name: Copy the EPEL repository definition
+  copy: src=epel.repo dest=/etc/yum.repos.d/
+
+- name: Copy the REMI repository definition
+  copy: src=remi.repo dest=/etc/yum.repos.d/
+
+- name: Create the GPG key for NGINX
+  copy: src=RPM-GPG-KEY-NGINX dest=/etc/pki/rpm-gpg
+
+- name: Create the GPG key for EPEL
+  copy: src=RPM-GPG-KEY-EPEL-7 dest=/etc/pki/rpm-gpg
+
+- name: Create the GPG key for REMI
+  copy: src=RPM-GPG-KEY-remi dest=/etc/pki/rpm-gpg
+
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: install ntpd
+  yum: name=ntp
+
+- name: Install hosts
+  template: src=hosts.j2 dest=/etc/hosts
+
+- name: install software
+  yum:
+    name:
+      - wget
+      - mc
+      - vim
+      - zip
+      - unzip
+      - bzip2
+      - wget
+      - git
+      - curl
+      - rsyslog
+    state: latest
+
+- name: "{{ansible_distribution}}: make sure selinux dependencies are installed"
+  yum:
+    name:
+      - libselinux-python
+      - policycoreutils-python
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: "{{ansible_distribution}}: configure selinux to allow galera ports"
+  seport:
+    ports: "{{item}}"
+    proto: tcp
+    reload: true
+    setype: mysqld_port_t
+    state: present
+  when: ansible_os_family == 'RedHat'
+  with_items:
+    - 3306
+    - 4567
+    - 4568
+    - 4444
+    - 873
+    - 9200
+
+- name: "{{ansible_distribution}}: grant selinux permissive for mysqld"
+  selinux_permissive:
+    name: mysqld_t
+    permissive: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: "{{ansible_distribution}}: grant selinux permissive for httpd"
+  selinux_permissive:
+    name: httpd_t
+    permissive: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: SELinux
+  shell: semanage port -m -t syslogd_port_t -p tcp 514
+
+- name: SELinux
+  shell: semanage port -m -t syslogd_port_t -p udp 514
+
+- name: sshd_config PasswordAuthentication yes
+  lineinfile:
+    dest:     /etc/ssh/sshd_config
+    state:    present
+    backrefs: yes
+    regexp:   '^#PasswordAuthentication yes'
+    line:     'PasswordAuthentication yes'
+
+- name: sshd_config delete PasswordAuthentication no
+  lineinfile:
+    dest:     /etc/ssh/sshd_config
+    state:    present
+    backrefs: yes
+    regexp:   '^PasswordAuthentication no'
+    line:     ''
+
+- name: Install rsyslog config for Nginx
+  template: src=nginx.conf.j2 dest=/etc/rsyslog.d/nginx.conf
+
+- name: Rsyslog config
+  shell: echo "$ModLoad imfile" >> /etc/rsyslog.conf
+
+- name: Rsyslog config
+  shell: echo "*.* @@10.0.0.100" >> /etc/rsyslog.conf
+
+- name: restart rsyslog
+  systemd: name=rsyslog state=restarted enabled=yes
+
+- name: restart sshd
+  systemd: name=sshd state=restarted
