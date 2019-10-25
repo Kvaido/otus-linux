@@ -5,39 +5,35 @@ web_cluster_virtual_ip: 10.0.0.84
 
 db_cluster_virtual_ip: 10.0.0.94
 
-#cluster_server_count: 2
-
-#db_cluster_server_count: 2
-
 inventory_hostname:
 - name: mariadb1
 - name: mariadb2
-- name: mariadb3
 
 galera_cluster:
 - name: mariadb1
 - name: mariadb2
-- name: mariadb3
 
 web_cluster_server_ips:
   - 10.0.0.81
   - 10.0.0.82
-  - 10.0.0.83
 
 cluster_interconnect_ips:
   - 10.0.1.81
   - 10.0.1.82
-  - 10.0.1.83
 
 db_cluster_server_ips:
   - 10.0.0.91
   - 10.0.0.92
-  - 10.0.0.100
 
 db_cluster_interconnect_ips:
   - 10.0.1.91
   - 10.0.1.92
-  - 10.0.1.93
+
+log_cluster_interconnect_ips:
+  - 10.0.0.100
+
+log_cluster_server_ips:
+  - 10.0.0.100
 
 cluster_servers:
   - ip: "{{ web_cluster_server_ips[0] }}"
@@ -50,10 +46,10 @@ cluster_servers:
     name: mariadb1.local mariadb1
   - ip: "{{ db_cluster_server_ips[1] }}"
     name: mariadb2.local mariadb2
-  - ip: "{{ db_cluster_server_ips[2] }}"
-    name: logsrv.local logsrv
   - ip: "{{ db_cluster_virtual_ip }}"
     name: mariadb.local mariadb
+  - ip: "{{ log_cluster_server_ips[0] }}"
+    name: logsrv.local logsrv
 
 nginx_cluster_servers:
   - ip: "{{ web_cluster_server_ips[0] }}"
